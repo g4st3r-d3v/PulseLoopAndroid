@@ -1,5 +1,9 @@
 # PulseLoop Android
 
+> 🇷🇺 **Русская версия:** этот форк переводит приложение на русский язык —
+> см. [README.ru.md](README.ru.md). Original project:
+> [foureight84/PulseLoopAndroid](https://github.com/foureight84/PulseLoopAndroid).
+
 > ⚠️ **Disclaimer:** This app is provided as-is and is not a medical application.
 > The rings are not medical devices. This app does not replace professional
 > healthcare. Always consult your doctor for any medical concerns.

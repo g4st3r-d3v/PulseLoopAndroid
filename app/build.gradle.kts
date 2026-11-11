@@ -26,7 +26,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // Repo the self-updater polls for new releases.
-        buildConfigField("String", "GITHUB_REPO", "\"foureight84/PulseLoopAndroid\"")
+        buildConfigField("String", "GITHUB_REPO", "\"g4st3r-d3v/PulseLoopAndroid\"")
 
         // Strava OAuth — credentials from local.properties (gitignored), fall back to
         // empty placeholders so non-Strava builds compile without the file.

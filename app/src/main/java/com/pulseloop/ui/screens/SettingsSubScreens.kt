@@ -2780,6 +2780,15 @@ fun AboutSettingsScreen(onOpenDebug: () -> Unit, onBack: () -> Unit) {
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
+                val translationNote = stringResource(R.string.about_translation_note)
+                if (translationNote.isNotEmpty()) {
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        translationNote,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
             }
         }
 
