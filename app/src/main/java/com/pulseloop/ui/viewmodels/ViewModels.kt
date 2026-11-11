@@ -1,5 +1,6 @@
 package com.pulseloop.ui.viewmodels
 
+import com.pulseloop.R
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.withTransaction
@@ -1167,7 +1168,9 @@ class CoachViewModel(
 
 // ──────────────────────── Vital Detail ────────────────────────
 
-enum class Period(val label: String) { DAY("Today"), WEEK("Week"), MONTH("Month") }
+enum class Period(val label: String, @androidx.annotation.StringRes val labelRes: Int) {
+    DAY("Today", R.string.period_today), WEEK("Week", R.string.period_week), MONTH("Month", R.string.period_month)
+}
 
 /**
  * VitalDetailViewModel — drives a single-metric detail screen with Today/Week/Month

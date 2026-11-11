@@ -1,5 +1,7 @@
 package com.pulseloop.service
 
+import com.pulseloop.R
+import com.pulseloop.util.L10n
 import com.pulseloop.data.DemoDataPolicy
 import com.pulseloop.data.entity.SleepSessionEntity
 import com.pulseloop.data.entity.SleepStageBlockEntity
@@ -354,14 +356,12 @@ object SleepFormat {
     fun duration(minutes: Int?): String {
         if (minutes == null || minutes < 0) return "—"
         val h = minutes / 60; val m = minutes % 60
-        return if (h <= 0) "${m}m" else "${h}h ${m.toString().padStart(2, '0')}m"
+        return if (h <= 0) L10n.get(R.string.duration_m, m) else L10n.get(R.string.duration_hm, h, m)
     }
 
     fun clockTime(ts: Long): String {
         val t = Instant.ofEpochMilli(ts).atZone(ZoneId.systemDefault())
-        val h = t.hour % 12; val displayH = if (h == 0) 12 else h
-        val ampm = if (t.hour < 12) "AM" else "PM"
-        return "$displayH:${t.minute.toString().padStart(2, '0')} $ampm"
+        return t.format(com.pulseloop.util.LocaleFormats.time())
     }
 }
 
@@ -387,11 +387,11 @@ data class SleepBar(
 )
 
 object SleepInsights {
-    val rangeHeroLabel = mapOf(
-        SleepRangeKey.DAY to "Last Sleep",
-        SleepRangeKey.WEEK to "Weekly Sleep",
-        SleepRangeKey.MONTH to "Monthly Sleep",
-        SleepRangeKey.YEAR to "Yearly Sleep",
+    val rangeHeroLabel get() = mapOf(
+        SleepRangeKey.DAY to L10n.get(R.string.sleep_last),
+        SleepRangeKey.WEEK to L10n.get(R.string.sleep_weekly),
+        SleepRangeKey.MONTH to L10n.get(R.string.sleep_monthly),
+        SleepRangeKey.YEAR to L10n.get(R.string.sleep_yearly),
     )
 
     private const val minAggNights = 2
