@@ -1029,6 +1029,7 @@
     <string name="update_latest">У вас последняя версия (%1$s).</string>
     <string name="update_checking">Проверка…</string>
     <string name="update_check">Проверить обновления</string>
+    <string name="about_translation_note">Русская версия: форк github.com/g4st3r-d3v/PulseLoopAndroid. Перевод интерфейса на русский язык; оригинальный проект — foureight84/PulseLoopAndroid (порт saksham2001/PulseLoopiOS), лицензия CC BY 4.0.</string>
     <string name="sc_chip_good_duration">Хорошая продолжительность</string>
     <string name="sc_chip_deep_balanced">Глубокий сон в норме</string>
     <string name="sc_chip_deep_strong">Много глубокого сна</string>

@@ -1007,6 +1007,7 @@
     <string name="update_latest">You\'re on the latest version (%1$s).</string>
     <string name="update_checking">Checking…</string>
     <string name="update_check">Check for updates</string>
+    <string name="about_translation_note" translatable="true"></string>
     <string name="sc_chip_good_duration">Good duration</string>
     <string name="sc_chip_deep_balanced">Deep sleep balanced</string>
     <string name="sc_chip_deep_strong">Deep sleep strong</string>
