@@ -1304,4 +1304,30 @@
     <string name="stall_not_connected_body">Чтобы выключить кольцо, PulseLoop должен быть к нему подключён. Дождитесь подключения и попробуйте снова.</string>
     <string name="stall_unsupported_title">Не удаётся выключить это кольцо</string>
     <string name="stall_unsupported_body">Это кольцо нельзя выключить из PulseLoop. Перезапустите его через родное приложение или на зарядке.</string>
+    <!-- Home Assistant -->
+    <string name="ha_title">Home Assistant</string>
+    <string name="ha_desc">PulseLoop подключается к Home Assistant как устройство, так же как приложение Companion, и после каждой синхронизации кольца обновляет свои сенсоры: пульс, SpO₂, HRV, стресс, температуру, шаги, сон и заряд кольца. В самом Home Assistant ничего настраивать не нужно.</string>
+    <string name="ha_enabled">Отправлять данные в Home Assistant</string>
+    <string name="ha_url_label">Адрес Home Assistant</string>
+    <string name="ha_url_hint">http://192.168.1.10:8123</string>
+    <string name="ha_token_label">Долгосрочный токен доступа</string>
+    <string name="ha_token_help">Создайте его в Home Assistant: профиль → Безопасность → Долгосрочные токены доступа. Он нужен один раз для регистрации и не сохраняется.</string>
+    <string name="ha_connect">Подключить</string>
+    <string name="ha_connecting">Подключение…</string>
+    <string name="ha_connected_to">Подключено к %1$s</string>
+    <string name="ha_disconnect">Отключить</string>
+    <string name="ha_disconnect_note">Отключено. Устройство PulseLoop останется в Home Assistant, пока вы не удалите его там (Настройки → Устройства и службы → Mobile App).</string>
+    <string name="ha_send_now">Отправить сейчас</string>
+    <string name="ha_sending">Отправка…</string>
+    <string name="ha_sent_ok">Отправлено в Home Assistant</string>
+    <string name="ha_last_push">Последняя отправка: %1$s</string>
+    <string name="ha_never_pushed">Ещё ничего не отправлялось</string>
+    <string name="ha_last_error">Последняя ошибка: %1$s</string>
+    <string name="ha_error_http">Home Assistant ответил HTTP %1$d</string>
+    <string name="ha_error_network">Не удалось связаться с Home Assistant: %1$s</string>
+    <string name="ha_error_token">Home Assistant отклонил токен</string>
+    <string name="ha_error_no_mobile_app">В Home Assistant не включена интеграция Mobile App (добавьте default_config: или mobile_app: в configuration.yaml)</string>
+    <string name="ha_error_not_ha">По этому адресу отвечает не Home Assistant</string>
+    <string name="ha_error_gone">Устройство PulseLoop удалено в Home Assistant. Подключитесь заново.</string>
+    <string name="ha_error_not_connected">Нет подключения к Home Assistant</string>
 </resources>

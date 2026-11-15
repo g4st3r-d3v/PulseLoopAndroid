@@ -3590,3 +3590,153 @@ private fun BatteryRuntimeEstimate(samples: List<VitalSample>) {
         )
     }
 }
+
+/**
+ * Home Assistant via its `mobile_app` integration: connect once with a long-lived token (used for
+ * the registration and dropped), then sensors update after every sync. See docs/home-assistant.md.
+ */
+@Composable
+fun HomeAssistantSettingsScreen(onBack: () -> Unit) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val settings = remember { com.pulseloop.homeassistant.HomeAssistantSettings(context) }
+    var registered by remember { mutableStateOf(settings.isRegistered) }
+    var enabled by remember { mutableStateOf(settings.enabled) }
+    var baseUrl by remember { mutableStateOf(settings.baseUrl) }
+    var token by remember { mutableStateOf("") }
+    var lastPushAt by remember { mutableStateOf(settings.lastPushAt) }
+    var lastError by remember { mutableStateOf(settings.lastError) }
+    var busy by remember { mutableStateOf(false) }
+    var status by remember { mutableStateOf<String?>(null) }
+
+    fun refresh() {
+        registered = settings.isRegistered
+        enabled = settings.enabled
+        lastPushAt = settings.lastPushAt
+        lastError = settings.lastError
+    }
+
+    val urlProblem = baseUrl.takeIf { it.isNotBlank() }
+        ?.let { com.pulseloop.homeassistant.HomeAssistantEndpoint.validateBase(it) }
+
+    SettingsSubScreen(title = stringResource(R.string.ha_title), onBack = onBack) {
+        Card(Modifier.fillMaxWidth()) {
+            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text(
+                    stringResource(R.string.ha_desc),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                if (!registered) {
+                    OutlinedTextField(
+                        value = baseUrl,
+                        onValueChange = { baseUrl = it },
+                        label = { Text(stringResource(R.string.ha_url_label)) },
+                        placeholder = { Text(stringResource(R.string.ha_url_hint)) },
+                        singleLine = true,
+                        isError = urlProblem != null,
+                        supportingText = urlProblem?.let { p -> { Text(LocalEndpoint.message(p)) } },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Next),
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                    OutlinedTextField(
+                        value = token,
+                        onValueChange = { token = it },
+                        label = { Text(stringResource(R.string.ha_token_label)) },
+                        supportingText = { Text(stringResource(R.string.ha_token_help)) },
+                        singleLine = true,
+                        visualTransformation = PasswordVisualTransformation(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                    Button(
+                        onClick = {
+                            busy = true
+                            status = null
+                            scope.launch {
+                                val outcome = com.pulseloop.homeassistant.HomeAssistantPushWorker.connect(context, baseUrl, token)
+                                status = com.pulseloop.homeassistant.HomeAssistantPushWorker.message(context, outcome)
+                                if (settings.isRegistered) token = ""
+                                refresh()
+                                busy = false
+                            }
+                        },
+                        enabled = !busy && token.isNotBlank() && baseUrl.isNotBlank() && urlProblem == null,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text(if (busy) stringResource(R.string.ha_connecting) else stringResource(R.string.ha_connect))
+                    }
+                } else {
+                    Text(
+                        stringResource(R.string.ha_connected_to, settings.baseUrl),
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                        Text(stringResource(R.string.ha_enabled), Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
+                        Switch(
+                            checked = enabled,
+                            onCheckedChange = { on ->
+                                enabled = on
+                                settings.enabled = on
+                                if (on) com.pulseloop.homeassistant.HomeAssistantPushWorker.enqueue(context)
+                                else com.pulseloop.homeassistant.HomeAssistantPushWorker.cancel(context)
+                            },
+                        )
+                    }
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        OutlinedButton(
+                            onClick = {
+                                busy = true
+                                status = null
+                                scope.launch {
+                                    val outcome = com.pulseloop.homeassistant.HomeAssistantPushWorker.pushNow(context)
+                                    status = com.pulseloop.homeassistant.HomeAssistantPushWorker.message(context, outcome)
+                                    refresh()
+                                    busy = false
+                                }
+                            },
+                            enabled = !busy,
+                            modifier = Modifier.weight(1f),
+                        ) {
+                            Text(if (busy) stringResource(R.string.ha_sending) else stringResource(R.string.ha_send_now))
+                        }
+                        OutlinedButton(
+                            onClick = {
+                                com.pulseloop.homeassistant.HomeAssistantPushWorker.cancel(context)
+                                settings.clearRegistration()
+                                status = context.getString(R.string.ha_disconnect_note)
+                                refresh()
+                            },
+                            enabled = !busy,
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error),
+                        ) {
+                            Text(stringResource(R.string.ha_disconnect))
+                        }
+                    }
+                    Text(
+                        lastPushAt?.let {
+                            stringResource(
+                                R.string.ha_last_push,
+                                android.text.format.DateUtils.getRelativeTimeSpanString(it).toString(),
+                            )
+                        } ?: stringResource(R.string.ha_never_pushed),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                status?.let {
+                    Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary)
+                }
+                if (status == null) lastError?.let {
+                    Text(
+                        stringResource(R.string.ha_last_error, it),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
+            }
+        }
+    }
+}

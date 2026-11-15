@@ -137,6 +137,7 @@ class RingSyncWorker(
                 // data — run the (debounced) export pass. The foreground path triggers the same
                 // worker via the SyncProgress("done") event, so both sync owners cover it.
                 HealthConnectExportWorker.enqueue(applicationContext)
+                com.pulseloop.homeassistant.HomeAssistantPushWorker.enqueue(applicationContext)
 
                 Result.success()
             }

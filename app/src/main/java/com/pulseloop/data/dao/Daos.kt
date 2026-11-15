@@ -54,6 +54,11 @@ interface MeasurementDao {
     @Query("SELECT value FROM measurements WHERE kindRaw = :kind AND timestamp <= :before ORDER BY timestamp DESC LIMIT 1")
     suspend fun latest(kind: String, before: Long = System.currentTimeMillis()): Double?
 
+    /** Newest synced (non-demo) row of a kind, with its timestamp — the Home Assistant push
+     *  reports when each reading was taken, and must never publish a seeded one. */
+    @Query("SELECT * FROM measurements WHERE kindRaw = :kind AND timestamp <= :before AND sourceRaw NOT IN ('demo','mock') ORDER BY timestamp DESC LIMIT 1")
+    suspend fun latestReal(kind: String, before: Long = System.currentTimeMillis()): MeasurementEntity?
+
     /** Newest measurement of any kind — iOS `latestMeasurementTimestamp()`, the live-data leg of
      *  the coach check-in's hasRecentData freshness fallback. */
     @Query("SELECT MAX(timestamp) FROM measurements")

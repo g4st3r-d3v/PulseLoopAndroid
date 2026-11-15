@@ -311,6 +311,9 @@ fun SettingsScreen(
                 add(SettingsRowItem(Icons.Filled.Sync, PulseColors.success, "Health Connect") {
                     navigate("settings/health-connect")
                 })
+                add(SettingsRowItem(Icons.Filled.Home, PulseColors.success, stringResource(R.string.ha_title)) {
+                    navigate("settings/home-assistant")
+                })
                 add(SettingsRowItem(Icons.Filled.Info, PulseColors.textMuted, stringResource(R.string.settings_about_app)) {
                     navigate("settings/about")
                 })

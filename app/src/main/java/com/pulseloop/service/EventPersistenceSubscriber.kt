@@ -462,6 +462,8 @@ class EventPersistenceSubscriber(
                     // moment new measurements can have landed. Debounced 15 s + REPLACE in the
                     // worker, so this is cheap to fire on every done.
                     HealthConnectExportWorker.enqueue(context)
+                    // Same moment, same debounce: the Home Assistant snapshot (no-op while off).
+                    com.pulseloop.homeassistant.HomeAssistantPushWorker.enqueue(context)
                 }
             }
             is PulseEvent.HeartRateComplete -> {}

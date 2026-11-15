@@ -1260,4 +1260,30 @@
     <string name="stall_not_connected_body">PulseLoop needs to be connected to your ring to turn it off. Wait for it to connect and try again.</string>
     <string name="stall_unsupported_title">Can\'t turn this ring off</string>
     <string name="stall_unsupported_body">This ring can\'t be turned off from PulseLoop. Restart it from its own app or its charger.</string>
+    <!-- Home Assistant -->
+    <string name="ha_title">Home Assistant</string>
+    <string name="ha_desc">PulseLoop connects to Home Assistant as a device, the same way the Companion app does, and after each ring sync updates its sensors: heart rate, SpO₂, HRV, stress, temperature, steps, sleep and ring battery. Nothing needs to be configured in Home Assistant.</string>
+    <string name="ha_enabled">Send data to Home Assistant</string>
+    <string name="ha_url_label">Home Assistant URL</string>
+    <string name="ha_url_hint">http://192.168.1.10:8123</string>
+    <string name="ha_token_label">Long-lived access token</string>
+    <string name="ha_token_help">Create one in Home Assistant: your profile → Security → Long-lived access tokens. It is used once to register and is not stored.</string>
+    <string name="ha_connect">Connect</string>
+    <string name="ha_connecting">Connecting…</string>
+    <string name="ha_connected_to">Connected to %1$s</string>
+    <string name="ha_disconnect">Disconnect</string>
+    <string name="ha_disconnect_note">Disconnected. The PulseLoop device stays in Home Assistant until you delete it there (Settings → Devices &amp; services → Mobile App).</string>
+    <string name="ha_send_now">Send now</string>
+    <string name="ha_sending">Sending…</string>
+    <string name="ha_sent_ok">Sent to Home Assistant</string>
+    <string name="ha_last_push">Last sent: %1$s</string>
+    <string name="ha_never_pushed">Nothing sent yet</string>
+    <string name="ha_last_error">Last error: %1$s</string>
+    <string name="ha_error_http">Home Assistant replied HTTP %1$d</string>
+    <string name="ha_error_network">Could not reach Home Assistant: %1$s</string>
+    <string name="ha_error_token">Home Assistant rejected the token</string>
+    <string name="ha_error_no_mobile_app">The Mobile App integration is not enabled in Home Assistant (add default_config: or mobile_app: to configuration.yaml)</string>
+    <string name="ha_error_not_ha">That address did not answer like Home Assistant</string>
+    <string name="ha_error_gone">The PulseLoop device was deleted in Home Assistant. Connect again.</string>
+    <string name="ha_error_not_connected">Not connected to Home Assistant</string>
 </resources>

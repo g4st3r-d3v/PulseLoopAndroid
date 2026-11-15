@@ -638,6 +638,9 @@ fun PulseLoopApp() {
                         },
                     )
                 }
+                paddedComposable("settings/home-assistant") {
+                    HomeAssistantSettingsScreen(onBack = { navController.popBackStack() })
+                }
                 paddedComposable("settings/strava") {
                     StravaSettingsScreen(onBack = { navController.popBackStack() })
                 }
